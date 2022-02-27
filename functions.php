@@ -1,4 +1,5 @@
 <?php
+require_once('./config.php');
 
 // Show to STDOUT if DEBUG flag is true
 function show($str) {
