@@ -1,6 +1,12 @@
 <?php
 require_once('./config.php');
 
+// Replace the source token in the passed string
+function inject_source($str): array|string
+{
+    return str_replace('[source]', WORDS_SOURCE, $str);
+}
+
 // Output a line
 function line($str, $breakBefore = false) {
     if ($breakBefore) {
@@ -89,8 +95,8 @@ function parse_board($str = '') {
             $pos = $i+1;
             $parts = explode(',', $types);
             $board['matches'][$pos] = $parts[0];
-            $board['nonmatches'][$pos] = $parts[1];
-            $board['includes'][$pos] = $parts[2];
+            $board['nonmatches'][$pos] = str_split($parts[1]);
+            $board['includes'][$pos] = str_split($parts[2]);
         }
 
     // Otherwise just initialize empty array for each position
@@ -132,9 +138,9 @@ function make_guess($guess, $board, $word_to_guess): bool|array {
 }
 
 // Get the next best guess given what's already been guessed and the list of possibilities
-function get_next_guess($turn, $board, $guesses, $words): string {
+function get_next_guess($board, $guesses, $words, $turn = 1, $adaptive_guess_threshold = 0, $possibilities_threshold = 100): string {
 
-    if ($turn < ADAPTIVE_GUESS_THRESHOLD) {
+    if ($turn < $adaptive_guess_threshold) {
         return $guesses[$turn-1];
     }
 
@@ -217,7 +223,7 @@ function get_next_guess($turn, $board, $guesses, $words): string {
     $perc_possibilities = number_format(($num_possibilities / count(WORDS_LIST)) * 100, 2);
     show("\n{$num_possibilities} remaining possibilities ({$perc_possibilities}%)\n");
 
-    if ($perc_possibilities > POSSIBILITIES_THRESHOLD) {
+    if ($perc_possibilities >= $possibilities_threshold) {
         return $guesses[$turn-1];
     } else {
         return $possibilities[0];

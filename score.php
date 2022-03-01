@@ -2,7 +2,7 @@
 require_once('config.php');
 require_once('functions.php');
 
-define('WORDS_LIST', array_map('trim', file(WORDS_SOURCE_FILE)));
+define('WORDS_LIST', array_map('trim', file(inject_source(WORDS_SOURCE_FILE))));
 
 // Set up letters
 $letters = [];
@@ -90,8 +90,8 @@ foreach ($scores as $word=>$score) {
 }
 br();
 
-file_put_contents(WORDS_SCORED_FILE, implode("\n", array_keys($scores)));
-line("Output scored words file to " . WORDS_SCORED_FILE);
-file_put_contents(WORDS_GUESSES_FILE, implode("\n", array_keys($top_words)));
-line("Output top guesses file to " . WORDS_GUESSES_FILE);
+file_put_contents(inject_source(WORDS_SCORED_FILE), implode("\n", array_keys($scores)));
+line("Output scored words file to " . inject_source(WORDS_SCORED_FILE));
+file_put_contents(inject_source(WORDS_GUESSES_FILE), implode("\n", array_keys($top_words)));
+line("Output top guesses file to " . inject_source(WORDS_GUESSES_FILE));
 br(2);

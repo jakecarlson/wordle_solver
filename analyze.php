@@ -2,9 +2,9 @@
 require_once('config.php');
 require_once('functions.php');
 
-define('WORDS_LIST', array_map('trim', file(WORDS_SCORED_FILE)));
+define('WORDS_LIST', array_map('trim', file(inject_source(WORDS_SCORED_FILE))));
 define('RANDOM_WORD', WORDS_LIST[array_rand(WORDS_LIST)]);
-define('TOP_GUESSES', array_map('trim', file(WORDS_GUESSES_FILE)));
+define('TOP_GUESSES', array_map('trim', file(inject_source(WORDS_GUESSES_FILE))));
 
 /* ==== */
 
@@ -20,8 +20,14 @@ foreach (WORDS_LIST as $word_to_guess) {
     foreach (range(0,NUM_TURNS-1) as $i) {
 
         $turn = $i+1;
-
-        $guess = get_next_guess($turn, $board, TOP_GUESSES, WORDS_LIST);
+        $guess = get_next_guess(
+            $board,
+            TOP_GUESSES,
+            WORDS_LIST,
+            $turn,
+            ADAPTIVE_GUESS_THRESHOLD,
+            POSSIBILITIES_THRESHOLD
+        );
 
         if (!$guess) {
             line("ERROR: no more possibilities?");
