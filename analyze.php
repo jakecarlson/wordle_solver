@@ -13,16 +13,7 @@ $num_fails = 0;
 foreach (WORDS_LIST as $word_to_guess) {
 
     // Set up board data structure
-    $board = [
-        'matches'       => [],
-        'nonmatches'    => [],
-        'includes'      => [],
-    ];
-    foreach (range(1, NUM_LETTERS) as $pos) {
-        $board['matches'][$pos] = false;
-        $board['nonmatches'][$pos] = [];
-        $board['includes'][$pos] = [];
-    }
+    $board = parse_board();
 
     head("WORD TO GUESS: " . $word_to_guess);
 

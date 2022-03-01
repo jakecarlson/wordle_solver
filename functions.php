@@ -73,6 +73,39 @@ function get_top_words($words, $tolerance = 0, $used_letters = []): array {
     return $result;
 }
 
+// Parse the board
+function parse_board($str = '') {
+
+    // Initialize types
+    $board = [
+        'matches'       => [],
+        'nonmatches'    => [],
+        'includes'      => [],
+    ];
+
+    // If an existing board was passed in, fill'er up
+    if (!empty($str)) {
+        foreach (explode('|', $str) as $i=>$types) {
+            $pos = $i+1;
+            $parts = explode(',', $types);
+            $board['matches'][$pos] = $parts[0];
+            $board['nonmatches'][$pos] = $parts[1];
+            $board['includes'][$pos] = $parts[2];
+        }
+
+    // Otherwise just initialize empty array for each position
+    } else {
+        foreach (range(1, NUM_LETTERS) as $pos) {
+            $board['matches'][$pos] = false;
+            $board['nonmatches'][$pos] = [];
+            $board['includes'][$pos] = [];
+        }
+    }
+
+    return $board;
+
+}
+
 // Make the guess and return the modified assumption data
 function make_guess($guess, $board, $word_to_guess): bool|array {
 
