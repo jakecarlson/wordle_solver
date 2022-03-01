@@ -1,6 +1,41 @@
 <?php
 require_once('./config.php');
 
+// Output a line
+function line($str, $breakBefore = false) {
+    if ($breakBefore) {
+        br();
+    }
+    echo $str . br();
+}
+
+// Output line break
+function br($num = 1) {
+    echo str_repeat("\n", $num);
+}
+
+// Output a header
+function head($str, $extraBreak = false) {
+    line($str, true);
+    hr();
+    if ($extraBreak) {
+        br();
+    }
+}
+
+// Output horizontal rule
+function hr() {
+    line(str_repeat('-', 32));
+}
+
+// Output a result
+function result($str) {
+    line(str_repeat('=', 32), true);
+    line($str);
+    line(str_repeat('=', 32));
+    br(2);
+}
+
 // Show to STDOUT if DEBUG flag is true
 function show($str) {
     if (DEBUG) {
